@@ -1,0 +1,1 @@
+Requirement already satisfied: freeze in ./virtual/lib/python3.6/site-packages (1.0.10)
