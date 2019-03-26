@@ -14,7 +14,7 @@ urlpatterns=[
     url(r'^profile/', views.profile, name='profile'),
     url(r'^single_image/(\d+)', views.single_image, name='single_image'),
     url(r'^upload_images/', views.upload_images, name='upload_images'),
-    # url(r'^send/', views.send, name='send'),
+   
     url(r'^search/', views.search_results, name='search_results'),
     url(r'^upload/profile', views.upload_profile, name='upload_profile'),
 

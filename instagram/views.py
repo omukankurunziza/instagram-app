@@ -49,48 +49,12 @@ def profile(request):
 
 	 return render(request, 'profile.html',{"current_user":current_user,"profile":profile})
 
-# @login_required(login_url='/accounts/login/')
-# def image(request):
-# 	 current_user = request.user
-# 	 image = Image.objects.all()
-
-
-# 	 return render(request, 'upload.html',{"current_user":current_user,"image":image})
-
-@login_required(login_url='/accounts/login/')
-def timeline(request):
-	current_user = request.user 
-	Myprofile = Profile.objects.order_by('-time_uploaded')
-	comment = Comment.objects.order_by('-time_comment')
-	
-
-	return render(request, 'my-instagram/timeline.html',{"Myprofile":Myprofile,"comment":comment})
 
 @login_required(login_url='/accounts/login/')
 def single_image(request,image_id):
 	image = image.objects.get(id= image_id)
 
 	return render(request, 'my-instagram/single_image.html',{"image":image})
-
-@login_required(login_url='/accounts/login/')
-def like(request,image_id):
-	Image = Image.objects.get(id=image_id)
-	like +=1
-	save_like()
-	return redirect(timeline)
-
-# @login_required(login_url='/accounts/login/')
-# def search_pic(request):
-
-# 	if "pic" in request.GET and request.GET["pic"]:
-# 		search_pic = request.GET.get("pic")
-# 		got_users = Profile.find_profile(search_pic)
-# 		message =f"{search_pic}"
-
-# 		return render(request,'my-inst/search_pic.html',{"got_users":got_users,"message":message})
-# 	else:
-# 		message = "Invalid username"
-# 		return render(request,'my-inst/search_pic.html',{"message":message})
 
 def search_results(request):
     if 'image' in request.GET and request.GET["image"]:
