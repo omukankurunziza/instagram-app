@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from . forms import ProfileUploadForm,CommentForm,ProfileForm,PhotosLetterForm,NewImageForm
-from django.http  import HttpResponse, Http404,HttpResponseRedirect
+from . forms import ProfileUploadForm,CommentForm,ProfileForm,ImageForm,ImageUploadForm
+from django.http  import HttpResponse
 from . models import Image ,Profile,  Comment
 from django.conf import settings
-import datetime as dt
+
 # from .email import send_welcome_email
 
 
@@ -12,28 +12,11 @@ import datetime as dt
 @login_required(login_url='/accounts/login/')
 def index(request):
     title = 'Instagram'
-    date = dt.date.today()
-    # all_images = Image.all_images()
-    images= Image.objects.all()
-    print(images)
-    # image_posts = Image.objects.all()
-    if request.method == 'POST':
-        form = PhotosLetterForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
+    image_posts = Image.objects.all()
+    # comments = Comment.objects.all()
 
-            recipient = PhotosLetterRecipients(name = name,email =email)
-            recipient.save()
-            send_welcome_email(name,email)
-
-            HttpResponseRedirect('index.html')
-    else:
-        form = PhotosLetterForm()
-        form = NewImageForm() 
-
-    #   print(image_posts)
-    return render(request, 'index.html', {"date": date,"letterForm":form, "ImageForm":form,"title":title},{'images':images})
+    print(image_posts)
+    return render(request, 'index.html', {"title":title,"image_posts":image_posts})
 
 
 @login_required(login_url='/accounts/login/')
@@ -66,13 +49,13 @@ def profile(request):
 
 	 return render(request, 'profile.html',{"current_user":current_user,"profile":profile})
 
-@login_required(login_url='/accounts/login/')
-def image(request):
-	 current_user = request.user
-	 image = Image.objects.all()
+# @login_required(login_url='/accounts/login/')
+# def image(request):
+# 	 current_user = request.user
+# 	 image = Image.objects.all()
 
 
-	 return render(request, 'upload.html',{"current_user":current_user,"image":image})
+# 	 return render(request, 'upload.html',{"current_user":current_user,"image":image})
 
 @login_required(login_url='/accounts/login/')
 def timeline(request):
@@ -155,7 +138,7 @@ def upload_profile(request):
 
 
 @login_required(login_url='/accounts/login/')
-def send(request):
+def upload_images(request):
     '''
     View function that displays a forms that allows users to upload images
     '''
@@ -168,11 +151,10 @@ def send(request):
         if form.is_valid():
             image = form.save(commit = False)
             image.user_key = current_user
-            image.likes +=0
+           
             image.save() 
 
-            return redirect( timeline)
+            # return redirect( timeline)
     else:
         form = ImageForm() 
-    return render(request, 'my-instagram/send.html',{"form" : form}) 
-
+    return render(request, 'my-instagram/upload_images.html',{"form" : form}) 

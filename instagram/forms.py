@@ -1,6 +1,6 @@
 from django import forms
 from .models import Comment,Profile,Image
-# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 
 class ProfileForm(forms.ModelForm):
 	model = Profile
@@ -22,11 +22,14 @@ class CommentForm(forms.ModelForm):
 		
 		exclude = ['user','image',]
 
-class PhotosLetterForm(forms.Form):
-    name = forms.CharField(label='First Name',max_length=30)
-    email = forms.EmailField(label='Email')
+class ImageForm(forms.ModelForm):
+	class Meta:
+		model = Image
+		
+		exclude = ['user']
 
-class NewImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
-        exclude = ['user']
+class ImageUploadForm(forms.ModelForm):
+	class Meta:
+		model = Image
+		
+		exclude = ['user']

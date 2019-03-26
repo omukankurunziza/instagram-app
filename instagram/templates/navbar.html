@@ -12,14 +12,9 @@
     <nav class="navbar navbar-default navbar-fixed-top " style="background-color:#EEEEEE; border:#EEEEEE; padding:10px;">
         <div class="container-fluid">
             <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                <a href="{% url 'timeline' %}">
-                    <img style="height:30px; width:30px; margin-right: 30px;" src="https://seeklogo.com/images/I/instagram-new-2016-glyph-logo-84CB825424-seeklogo.com.png">
-                </a>
+                <!-- <img  src="https://geeko.lesoir.be/wp-content/uploads/sites/58/2018/06/instagram.jpg" onload="typeof google==='object'&amp;&amp;google.aft&amp;&amp;google.aft(this)" " width="60" height="71" style="margin-top: 9px;" data-iml="1553619846924">   -->
 
-                <a href="{% url 'timeline' %}">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png" width=100px height=35px alt="INSTAGRAM"> </a>
-                </a>
-
+                
 
 
              </div>
@@ -39,10 +34,10 @@
             </div>
            
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-      <a href="{% url 'profile' %}" id="instagramTitle" style="color: black; margin-right:20px; font-size:25px;"><span class="glyphicon glyphicon-user"></span></a>
-      
+        <a href="{% url 'profile' %}" id="instagramTitle" style="color: black; margin-right:20px; font-size:25px;"><span class="profile"></span>Profile</a>
+       
 
-    <div class="col-sm-3 " style="float: right; margin-top: -20px; margin-right: 80px">
+    <div class="col-sm-3 " style="float: right; margin-top: -20px; margin-right: 80px"> 
             {% if user.is_authenticated %}
             <ul>
               <li class="dropdown">
@@ -55,6 +50,9 @@
                   </li>
                   <li>
                      <a href="{% url 'upload_profile'%}">Create Profile</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'upload_images'%}">Upload Images</a>
                   </li>
                   <li>
                     <a href="/accounts/password/change">Change Password</a>
