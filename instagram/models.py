@@ -1,87 +1,116 @@
 from django.db import models
-import datetime as dt
-# from django.contrib.auth.models import User
-# from tinymce.models import HTMLField
+from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 # Create your models here.
-class User(models.Model):
-    first_name = models.CharField(max_length =30)
-    last_name = models.CharField(max_length =30)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length = 10,blank =True)
-
-    def __str__(self):
-        return self.first_name
-
-    def save_user(self):
-        self.save() 
-
-    class Meta:
-        ordering = ['first_name']
-
-class tags(models.Model):
-    name = models.CharField(max_length =30)
-
-    def __str__(self):
-        return self.name
-
-
-class Profile(models.Model):
-    profile_photo = models.ImageField(upload_to = 'pictures/')
-    bio = models.CharField(max_length =70)
-   
-    def __str__(self):
-        return self.name
-        
-    def save_profile(self):
-        self.save()    
-
-    def delete_profile(self):
-        Profile.objects.filter(id = self.pk).delete()
-   
-    def update_profile(self, **kwargs):
-        self.objects.filter(id = self.pk).update(**kwargs)  
-
 class Image(models.Model):
+    image = models.ImageField(upload_to = "pictures/",null = True)
+    user = models.ForeignKey(User,null=True)
+    image_name = models.CharField(max_length = 30,null = True)
+    likes = models.IntegerField(default=0)
+    image_caption = models.TextField(null = True)
+    pub_date = models.DateTimeField(auto_now_add=True,null=True)
+    # profile = models.ForeignKey(Profile, null=True) 
+    comments = models.IntegerField(default=0)
 
-    image =image = models.ImageField(upload_to = 'pictures/')
-    image_name = models.CharField(max_length =60)
-    image_caption = models.CharField(max_length =60)
-    profile = models.ForeignKey(Profile)
-    tags = models.ManyToManyField(tags)
-    like =  models.TextField()
-    comments =  models.TextField()
-    pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
-        
-    def save_image(self):
-        self.save()    
+    	return self.image_name
 
     def delete_image(self):
-        Image.objects.filter(id = self.pk).delete()
-   
-    def update_image_caption(self, **kwargs):
-        self.objects.filter(id = self.pk).update(**kwargs)  
-    
-    
-#     @classmethod
-#     def todays_news(cls):
-#             today = dt.date.today()
-#             news = cls.objects.filter(pub_date__date = today)
-#             return news
+    	self.delete()
 
-#     @classmethod
-#     def days_news(cls,date):
-#             news = cls.objects.filter(pub_date__date = date)
-#             return news
+    def save_image(self):
+    	self.save()
 
-#     @classmethod
-#     def search_by_title(cls,search_term):
-#             news = cls.objects.filter(title__icontains=search_term)
-#             return news
+    def update_caption(self,new_caption):
+    	self.image_caption = new_caption
+    	self.save()
 
-# class NewsLetterRecipients(models.Model):
-#     name = models.CharField(max_length = 30)
-#     email = models.EmailField()
+
+    @classmethod
+    def get_images_by_user(cls,id):
+        sent_imgaes = Image.objects.filter(user_id=id)
+        return sent_images
+
+    @classmethod
+    def get_images_by_id(cls,id):
+        fetched_image = Image.objects.get(id = id)
+        return  fetched_image
+
+    class Meta:
+    	ordering = ['-pub_date']
+
+
+    def __str__(self):
+    	return self.user.username
+
+    def save_profile(self):
+    	self.save()
+
+class Profile(models.Model):
+	username = models.CharField(default='User',max_length=30)
+	profile_image = models.ImageField(upload_to = "profile/",null=True)
+	bio = models.TextField(default='',blank = True)
+	# first_name = models.CharField(max_length =30)
+	# last_name = models.CharField(max_length =30)
+
+	def __str__(self):
+		return self.username
+
+	def delete_profile(self):
+		self.delete()
+
+	def save_profile(self):
+		self.save()
+
+	@classmethod
+	def search_profile(cls,search_term):
+		got_profiles = cls.objects.filter(username__icontains = search_term)
+		return got_profiles
+
+class Comment(models.Model):
+	user = models.ForeignKey(User, null= True)
+	image = models.ForeignKey(Image, null= True,related_name='comment')
+	comment= models.TextField( blank=True)
+	
+	def __str__(self):
+		return self.comment
+
+
+	def delete_comment(self):
+		self.delete()
+
+	def save_comment(self):
+		self.save()
+
+
+class Likes(models.Model):
+	user = models.ForeignKey(Profile,null=True)
+	# pic = models.ForeignKey(Pic,null=True)
+
+	def __int__(self):
+		return self.name
+
+	def unlike(self):
+		self.delete()
+
+	def save_like(self):
+		self.save() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
