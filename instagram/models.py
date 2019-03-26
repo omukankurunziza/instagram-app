@@ -4,7 +4,7 @@ from tinymce.models import HTMLField
 
 # Create your models here.
 class Image(models.Model):
-    image = models.ImageField(upload_to = "pictures/",null = True)
+    image = models.ImageField(upload_to = "images/",null = True)
     user = models.ForeignKey(User,null=True)
     image_name = models.CharField(max_length = 30,null = True)
     likes = models.IntegerField(default=0)
@@ -27,16 +27,25 @@ class Image(models.Model):
     	self.image_caption = new_caption
     	self.save()
 
+	# @classmethod
+    # def all_images(cls):
+    #     images = cls.objects.all()
+    #     return images 
 
     @classmethod
-    def get_images_by_user(cls,id):
-        sent_imgaes = Image.objects.filter(user_id=id)
-        return sent_images
+    def get_image(cls, id):
+        image = cls.objects.get(id=id)
+        return image
 
-    @classmethod
-    def get_images_by_id(cls,id):
-        fetched_image = Image.objects.get(id = id)
-        return  fetched_image
+    # @classmethod
+    # def get_images_by_user(cls,id):
+    #     sent_imgaes = Image.objects.filter(user_id=id)
+    #     return sent_images
+
+    # @classmethod
+    # def get_images_by_id(cls,id):
+    #     fetched_image = Image.objects.get(id = id)
+    #     return  fetched_image
 
     class Meta:
     	ordering = ['-pub_date']
@@ -65,9 +74,9 @@ class Profile(models.Model):
 		self.save()
 
 	@classmethod
-	def search_profile(cls,search_term):
-		got_profiles = cls.objects.filter(username__icontains = search_term)
-		return got_profiles
+	def search_by_name(cls,search_term):
+		photos = cls.objects.filter(name__icontains = search_term)
+		return photos
 
 class Comment(models.Model):
 	user = models.ForeignKey(User, null= True)
