@@ -1,20 +1,39 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from . forms import ProfileUploadForm,CommentForm,ProfileForm,ImageForm,ImageUploadForm
-from django.http  import HttpResponse
-from . models import Image ,Profile, Likes,  Comment
+from . forms import ProfileUploadForm,CommentForm,ProfileForm,PhotosLetterForm,NewImageForm
+from django.http  import HttpResponse, Http404,HttpResponseRedirect
+from . models import Image ,Profile,  Comment
 from django.conf import settings
+import datetime as dt
+# from .email import send_welcome_email
 
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def index(request):
-      title = 'Instagram'
-      image_posts = Image.objects.all()
-     
+    title = 'Instagram'
+    date = dt.date.today()
+    # all_images = Image.all_images()
+    images= Image.objects.all()
+    print(images)
+    # image_posts = Image.objects.all()
+    if request.method == 'POST':
+        form = PhotosLetterForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
 
-      print(image_posts)
-      return render(request, 'index.html', {"title":title,"image_posts":image_posts})
+            recipient = PhotosLetterRecipients(name = name,email =email)
+            recipient.save()
+            send_welcome_email(name,email)
+
+            HttpResponseRedirect('index.html')
+    else:
+        form = PhotosLetterForm()
+        form = NewImageForm() 
+
+    #   print(image_posts)
+    return render(request, 'index.html', {"date": date,"letterForm":form, "ImageForm":form,"title":title},{'images':images})
 
 
 @login_required(login_url='/accounts/login/')
@@ -93,10 +112,10 @@ def like(request,image_id):
 def search_results(request):
     if 'image' in request.GET and request.GET["image"]:
         search_term = request.GET.get("image")
-        searched_profiles = Profile.search_profile(search_term)
+        searched_images = Image.search__by_name(search_term)
         message = f"{search_term}"
 
-        return render(request, 'search_image.html',{"message":message,"images": searched_profiles})
+        return render(request, 'search_image.html',{"message":message,"images": searched_images})
 
     else:
         message = "You haven't searched for any term"
