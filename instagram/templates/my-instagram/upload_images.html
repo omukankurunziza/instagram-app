@@ -15,7 +15,7 @@
 </head>
 
 <body>
-
+<div class="container" style="background-color: cadetblue">
   <form  action="{%url 'upload_images'%}" method="POST" enctype="multipart/form-data" >
     {%csrf_token%}
 
@@ -27,7 +27,7 @@
    {% block scripts %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   {% bootstrap_javascript %} {% endblock %}
-  
+</div>
 </body>
 
 </html>
