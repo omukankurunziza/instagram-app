@@ -32,7 +32,7 @@ $ python3.6 manage.py runserver
 Running the tests
 $ python3.6 manage.py test
 
-## Link to Live Website
+## Link to Live Website: https://instagropp.herokuapp.com
 
 
 ## Technologies Used
