@@ -39,11 +39,6 @@ class Image(models.Model):
     	ordering = ['-pub_date']
 
 
-    
-
-    def save_profile(self):
-    	self.save()
-
 class Profile(models.Model):
 	username = models.CharField(default='User',max_length=30)
 	profile_image = models.ImageField(upload_to = "profile/",null=True)
@@ -78,11 +73,11 @@ class Comment(models.Model):
 
 	def save_comment(self):
 		self.save()
-
+	
 
 class Likes(models.Model):
 	user = models.ForeignKey(Profile,null=True)
-	
+	like= models.TextField( blank=True)
 	def __int__(self):
 		return self.name
 
@@ -91,6 +86,8 @@ class Likes(models.Model):
 
 	def save_like(self):
 		self.save() 
+
+	
 
 
 
