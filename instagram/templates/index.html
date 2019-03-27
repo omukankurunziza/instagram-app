@@ -6,12 +6,13 @@
     <h1 style="color:burlywood;font-size: 30px" class="text-center"> Instagram Photo </h1>
   </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="margin-bottom: 20px" >
+        
             {% for image in image_posts %}
             <div class="home-images">
                 <p class="home-text">
                     <a href="{% url 'profile' %}">{{image.profile.username}}</a>
                 </p>
+            <div class="col-md-4" style="margin-bottom: 20px" >
                 <img src="{{image.image.url}}" style="width: 200px; height: 200px;" alt="Image">
               
                 <ul class="list-inline home-list">
@@ -26,10 +27,12 @@
                 </ul>
                 
             </div>
+        
             {% empty %}
             <h2>No images. Plz Follow some people to see their images</h2>
             {% endfor %}
         </div>
+        
     </div>
 </div>
 {% endblock %}
