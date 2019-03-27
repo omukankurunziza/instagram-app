@@ -27,25 +27,13 @@ class Image(models.Model):
     	self.image_caption = new_caption
     	self.save()
 
-	# @classmethod
-    # def all_images(cls):
-    #     images = cls.objects.all()
-    #     return images 
-
+	
     @classmethod
     def get_image(cls, id):
         image = cls.objects.get(id=id)
         return image
 
-    # @classmethod
-    # def get_images_by_user(cls,id):
-    #     sent_imgaes = Image.objects.filter(user_id=id)
-    #     return sent_images
-
-    # @classmethod
-    # def get_images_by_id(cls,id):
-    #     fetched_image = Image.objects.get(id = id)
-    #     return  fetched_image
+    
 
     class Meta:
     	ordering = ['-pub_date']
@@ -60,8 +48,7 @@ class Profile(models.Model):
 	username = models.CharField(default='User',max_length=30)
 	profile_image = models.ImageField(upload_to = "profile/",null=True)
 	bio = models.TextField(default='',blank = True)
-	# first_name = models.CharField(max_length =30)
-	# last_name = models.CharField(max_length =30)
+	
 
 	def __str__(self):
 		return self.username
@@ -95,8 +82,7 @@ class Comment(models.Model):
 
 class Likes(models.Model):
 	user = models.ForeignKey(Profile,null=True)
-	# pic = models.ForeignKey(Pic,null=True)
-
+	
 	def __int__(self):
 		return self.name
 
